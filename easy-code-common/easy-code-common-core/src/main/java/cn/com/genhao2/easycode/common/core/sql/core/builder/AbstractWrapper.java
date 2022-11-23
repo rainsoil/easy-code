@@ -13,16 +13,39 @@ import java.util.function.Supplier;
  * @author luyanan
  * @since 2022/11/20
  **/
-public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, R, Children>> extends Wrapper<T> implements CompareSqlBuilder<Children, R>, JoinSqlBuilder<Children>, FuncSqlBuilder<Children, R> {
+public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, R, Children>> extends Wrapper<T> implements
+		CompareSqlBuilder<Children, R>,
+		JoinSqlBuilder<Children, R>,
+		FuncSqlBuilder<Children, R>,
+		OrderBySqlBuilder<Children, R>,
+		TableNameBuilder<Children>,
+		GroupSqlBuilder<Children, R> {
 
 	/**
 	 * 占位符
 	 */
 	protected final Children typedThis = (Children) this;
+
+	/**
+	 * 表名
+	 *
+	 * @since 2022/11/21
+	 */
+
+	protected String tableName;
+
+	/**
+	 * 表名别名
+	 *
+	 * @since 2022/11/21
+	 */
+
+	protected String tableNameAlias;
 	private MergeSegments mergeSegments = new MergeSegments();
 
 	@Override
 	public String getSqlSegment() {
+
 		return mergeSegments.getSqlSegment();
 	}
 
@@ -34,7 +57,7 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
 
 	@Override
 	public String getTableName() {
-		return null;
+		return this.tableName;
 	}
 
 	@Override
@@ -44,9 +67,18 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
 
 	@Override
 	public Children isNull(boolean condition, R column) {
-		return null;
+		return maybeDo(condition, () -> {
+			mergeSegments.add(SqlKeyword.IS_NULL, columnToString(column));
+		});
 	}
 
+
+	@Override
+	public Children table(String tableName, String alias) {
+		this.tableName = tableName;
+		this.tableNameAlias = alias;
+		return typedThis;
+	}
 
 	/**
 	 * 构造查询条件
@@ -83,11 +115,49 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
 		return typedThis;
 	}
 
+	@Override
+	public Children orderByDesc(boolean condition, R column) {
+		return maybeDo(condition, () -> {
+			mergeSegments.add(SqlKeyword.DESC, columnToString(column));
+		});
+	}
+
+	@Override
+	public Children leftJoin(boolean condition, String table, R leftColumn, R rightColumn) {
+		return maybeDo(condition, () -> {
+			mergeSegments.add(SqlKeyword.LEFT_JOIN, table, leftColumn, rightColumn);
+		});
+	}
+
+	@Override
+	public Children groupBy(boolean condition, R... columns) {
+		return maybeDo(condition, () -> {
+			for (R column : columns) {
+
+				mergeSegments.add(SqlKeyword.GROUP_BY, columnToString(column));
+			}
+		});
+	}
+
+	@Override
+	public Children having(boolean condition, R column, Object val) {
+		return maybeDo(condition, () -> {
+			mergeSegments.add(SqlKeyword.HAVING, columnToString(column), val);
+		});
+	}
 
 	/**
 	 * 子类返回一个自己的新对象
 	 */
 	protected abstract Children instance();
+
+	/**
+	 * 获取sql
+	 *
+	 * @return Children
+	 * @since 2022/11/21
+	 */
+	public abstract String getSql();
 
 	/**
 	 * 函数化的做事
@@ -109,6 +179,12 @@ public abstract class AbstractWrapper<T, R, Children extends AbstractWrapper<T, 
 	@FunctionalInterface
 	public interface DoSomething {
 
+
+		/**
+		 * do  some thing
+		 *
+		 * @since 2022/11/21
+		 */
 		void doIt();
 	}
 }

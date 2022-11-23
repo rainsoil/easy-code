@@ -1,6 +1,7 @@
 package cn.com.genhao2.easycode.common.core.sql.core.builder;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
 
 /**
  * 查询条件封装
@@ -9,7 +10,8 @@ import java.io.Serializable;
  * @author luyanan
  * @since 2022/11/20
  **/
-public interface CompareSqlBuilder<Children, R> extends Serializable {
+public interface CompareSqlBuilder<Children, R> extends FuncSqlBuilder<Children, R>, Serializable {
+
 
 
 	/**

@@ -9,8 +9,18 @@ import java.util.function.Supplier;
  * @author luyanan
  * @since 2022/11/20
  **/
-public interface JoinSqlBuilder<Children> extends Serializable {
+public interface JoinSqlBuilder<Children, R> extends Serializable {
 
-	Children or(boolean condition, Supplier<Children> supplier);
 
+	/**
+	 * left join
+	 *
+	 * @param condition
+	 * @param table
+	 * @param leftColumn
+	 * @param rightColumn
+	 * @return Children
+	 * @since 2022/11/21
+	 */
+	Children leftJoin(boolean condition, String table, R leftColumn, R rightColumn);
 }

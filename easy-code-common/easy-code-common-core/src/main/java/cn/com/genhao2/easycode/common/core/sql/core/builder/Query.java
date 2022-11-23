@@ -1,6 +1,8 @@
 package cn.com.genhao2.easycode.common.core.sql.core.builder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 查询
@@ -18,8 +20,4 @@ public interface Query<Children, T, R> extends Serializable {
 	Children select(R... columns);
 
 
-	/**
-	 * 查询条件 SQL 片段
-	 */
-	String getSqlSelect();
 }

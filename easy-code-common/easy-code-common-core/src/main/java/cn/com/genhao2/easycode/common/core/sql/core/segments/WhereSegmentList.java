@@ -22,8 +22,9 @@ public class WhereSegmentList extends AbstractSegmentList {
 
 	@Override
 	public String getSqlSegment() {
-
-		return andSql.stream().collect(Collectors.joining(SqlKeyword.AND.getSqlSegment())) + orSql.stream().collect(Collectors.joining(" "));
+		String andSqls = andSql.stream().collect(Collectors.joining(SqlKeyword.AND.getSqlSegment()));
+		String orSqls = orSql.stream().collect(Collectors.joining(" ")).replace(SqlKeyword.WHERE.getSqlSegment(), "");
+		return andSqls + orSqls;
 	}
 
 	@Override
@@ -34,29 +35,24 @@ public class WhereSegmentList extends AbstractSegmentList {
 	@Override
 	protected SqlKeyword[] supportSqlKeyword() {
 		return new SqlKeyword[]{
-				SqlKeyword.EQ, SqlKeyword.OR
+				SqlKeyword.EQ, SqlKeyword.OR, SqlKeyword.IS_NULL
 		};
 	}
 
 	@Override
 	public void add(SqlKeyword sqlKeyword, String column, Object... val) {
 
-
+//
+		for (Object o : val) {
+			params.add(o);
+		}
 		if (sqlKeyword.equals(SqlKeyword.OR)) {
 
 			String sql = StrUtil.format(sqlKeyword.getSqlSegment(), column);
 			orSql.add(sql);
-			for (Object o : val) {
-				params.add(o);
-			}
-		}
-		if (sqlKeyword.equals(SqlKeyword.EQ)) {
-
-			String sqlSegment = sqlKeyword.getSqlSegment();
+		} else {
 			andSql.add(StrUtil.format(sqlKeyword.getSqlSegment(), column));
-			params.add(val[0]);
 		}
-
 	}
 
 

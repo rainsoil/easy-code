@@ -26,7 +26,7 @@ public enum SqlKeyword implements ISqlSegment {
 	GE(">="),
 	LT("<"),
 	LE("<="),
-	IS_NULL("IS NULL"),
+	IS_NULL(" {}  IS NULL "),
 	IS_NOT_NULL("IS NOT NULL"),
 	GROUP_BY("GROUP BY"),
 	HAVING("HAVING"),
@@ -37,9 +37,11 @@ public enum SqlKeyword implements ISqlSegment {
 	NOT_BETWEEN("NOT BETWEEN"),
 	ASC("ASC"),
 	DESC("DESC"),
-	LEFT_JOIN("LEFT JOIN"),
+	LEFT_JOIN("LEFT JOIN {}  on {}"),
 	RIGHT_JOIN("RIGHT JIIN"),
-
+	SELECT("SELECT "),
+	FROM(" FREOM "),
+	WHERE(" WHERE "),
 	;
 
 	private final String keyword;
