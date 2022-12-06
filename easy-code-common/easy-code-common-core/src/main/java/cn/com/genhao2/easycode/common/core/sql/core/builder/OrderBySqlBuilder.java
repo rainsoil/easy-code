@@ -19,4 +19,38 @@ public interface OrderBySqlBuilder<Children, R> extends Serializable {
 	 */
 	Children orderByDesc(boolean condition, R column);
 
+
+	/**
+	 * desc 排序
+	 *
+	 * @param column 字段
+	 * @return Children
+	 * @since 2022/11/21
+	 */
+	default Children orderByDesc(R column) {
+		return orderByDesc(true, column);
+	}
+
+
+	/**
+	 * ascasc 排序
+	 *
+	 * @param condition 执行条件
+	 * @param column    字段
+	 * @return Children
+	 * @since 2022/11/21
+	 */
+	Children orderByAsc(boolean condition, R column);
+
+
+	/**
+	 * asc 排序
+	 *
+	 * @param column 字段
+	 * @return Children
+	 * @since 2022/11/21
+	 */
+	default Children orderByAsc(R column) {
+		return orderByAsc(true, column);
+	}
 }

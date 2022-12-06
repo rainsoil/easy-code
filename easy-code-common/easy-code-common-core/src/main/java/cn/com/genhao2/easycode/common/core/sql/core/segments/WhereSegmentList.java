@@ -35,23 +35,49 @@ public class WhereSegmentList extends AbstractSegmentList {
 	@Override
 	protected SqlKeyword[] supportSqlKeyword() {
 		return new SqlKeyword[]{
-				SqlKeyword.EQ, SqlKeyword.OR, SqlKeyword.IS_NULL
+				SqlKeyword.EQ,
+				SqlKeyword.OR,
+				SqlKeyword.IS_NULL,
+				SqlKeyword.IN,
+				SqlKeyword.IN_STR,
+				SqlKeyword.NOT_IN_STR,
+				SqlKeyword.NOT_IN,
+				SqlKeyword.LIKE,
+				SqlKeyword.LIKE_LEFT,
+				SqlKeyword.LIKE_RIGHT,
+				SqlKeyword.NOT_LIKE,
+				SqlKeyword.EQ,
+				SqlKeyword.NE,
+				SqlKeyword.GT,
+				SqlKeyword.LT,
+				SqlKeyword.LE,
+				SqlKeyword.IS_NOT_NULL,
+				SqlKeyword.EXISTS,
+				SqlKeyword.NOT_EXISTS,
+				SqlKeyword.BETWEEN,
+				SqlKeyword.NOT_BETWEEN
 		};
 	}
 
 	@Override
 	public void add(SqlKeyword sqlKeyword, String column, Object... val) {
 
-//
-		for (Object o : val) {
-			params.add(o);
-		}
-		if (sqlKeyword.equals(SqlKeyword.OR)) {
 
+		if (sqlKeyword.equals(SqlKeyword.OR)) {
+			for (Object o : val) {
+				params.add(o);
+			}
 			String sql = StrUtil.format(sqlKeyword.getSqlSegment(), column);
 			orSql.add(sql);
+		} else if (sqlKeyword.equals(SqlKeyword.IN_STR) || sqlKeyword.equals(SqlKeyword.NOT_IN_STR)) {
+
+			andSql.add(StrUtil.format(sqlKeyword.getSqlSegment(), column, val[0]));
 		} else {
+			for (Object o : val) {
+				params.add(o);
+			}
 			andSql.add(StrUtil.format(sqlKeyword.getSqlSegment(), column));
+
 		}
 	}
 

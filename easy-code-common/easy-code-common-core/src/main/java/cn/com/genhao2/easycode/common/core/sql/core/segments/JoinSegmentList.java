@@ -48,15 +48,17 @@ public class JoinSegmentList extends AbstractSegmentList {
 	@Override
 	protected SqlKeyword[] supportSqlKeyword() {
 		return new SqlKeyword[]{
-				SqlKeyword.LEFT_JOIN
+				SqlKeyword.LEFT_JOIN, SqlKeyword.RIGHT_JOIN
 		};
 	}
 
 	@Override
 	public void add(SqlKeyword sqlKeyword, String column, Object... val) {
 		if (val.length == 2) {
-
 			sqls.add(StrUtil.format(sqlKeyword.getSqlSegment(), column, val[0] + " = " + val[1]));
+		}
+		if (val.length == 1) {
+			sqls.add(StrUtil.format(sqlKeyword.getSqlSegment(), column, val[0]));
 		}
 
 	}

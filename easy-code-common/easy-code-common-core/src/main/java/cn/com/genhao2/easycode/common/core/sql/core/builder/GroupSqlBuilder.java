@@ -21,6 +21,16 @@ public interface GroupSqlBuilder<Children, R> extends Serializable {
 	 */
 	Children groupBy(boolean condition, R... column);
 
+	/**
+	 * 分组
+	 *
+	 * @param column 字段
+	 * @return Children
+	 * @since 2022/11/22
+	 */
+	default Children groupBy(R... column) {
+		return groupBy(true, column);
+	}
 
 	/**
 	 * having
@@ -32,4 +42,17 @@ public interface GroupSqlBuilder<Children, R> extends Serializable {
 	 * @since 2022/11/22
 	 */
 	Children having(boolean condition, R column, Object val);
+
+
+	/**
+	 * having
+	 *
+	 * @param column
+	 * @param val
+	 * @return Children
+	 * @since 2022/11/22
+	 */
+	default Children having(R column, Object val) {
+		return having(true, column, val);
+	}
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author luyanan
  * @since 2022/11/21
  **/
-public interface TableNameBuilder<Children> extends Serializable {
+public interface TableNameBuilder<Children, T> extends Serializable {
 
 
 	/**
@@ -19,7 +19,14 @@ public interface TableNameBuilder<Children> extends Serializable {
 	 * @return Children
 	 * @since 2022/11/21
 	 */
-	Children table(String tableName, String alias);
+	Children from(String tableName, String alias);
 
-
+	/**
+	 * 设置表名
+	 *
+	 * @param tableNameClazz 表名clazz
+	 * @return Children
+	 * @since 2022/11/21
+	 */
+	Children from(Class<T> tableNameClazz);
 }

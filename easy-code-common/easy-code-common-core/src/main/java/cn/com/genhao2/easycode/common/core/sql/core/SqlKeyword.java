@@ -14,31 +14,45 @@ import java.util.List;
 public enum SqlKeyword implements ISqlSegment {
 
 	AND(" AND "),
+
 	OR("OR ({}) "),
+
 	NOT("NOT"),
-	IN("IN (?)"),
-	NOT_IN("NOT IN (? )"),
-	LIKE("LIKE concat('%','?','?')"),
-	NOT_LIKE("NOT LIKE"),
+
+	IN("{} IN (?)"),
+
+	IN_STR("{} IN ( {} )"),
+
+	NOT_IN("{} NOT IN (? )"),
+	NOT_IN_STR("{} NOT IN ({}} )"),
+	LIKE("{} LIKE concat('%',?,'%')"),
+
+	LIKE_LEFT("{} LIKE concat('%',?,'')"),
+
+	LIKE_RIGHT("{} LIKE concat('',?,'%')"),
+
+	NOT_LIKE("{} NOT LIKE concat('%',?,'%')"),
+
 	EQ(" {} = ? "),
-	NE("<>"),
-	GT(">"),
-	GE(">="),
-	LT("<"),
-	LE("<="),
+
+	NE("{} <> ? "),
+	GT(" {} > ? "),
+	GE(" {} >= ? "),
+	LT("{} < ? "),
+	LE("{} <= ? "),
 	IS_NULL(" {}  IS NULL "),
-	IS_NOT_NULL("IS NOT NULL"),
+	IS_NOT_NULL(" {} IS NOT NULL"),
 	GROUP_BY("GROUP BY"),
 	HAVING("HAVING"),
 	ORDER_BY("ORDER BY"),
-	EXISTS("EXISTS"),
-	NOT_EXISTS("NOT EXISTS"),
-	BETWEEN("BETWEEN"),
-	NOT_BETWEEN("NOT BETWEEN"),
+	EXISTS("{} EXISTS"),
+	NOT_EXISTS(" {} NOT EXISTS"),
+	BETWEEN(" {} BETWEEN ? and  ? "),
+	NOT_BETWEEN("{} NOT BETWEEN ? and ? "),
 	ASC("ASC"),
 	DESC("DESC"),
 	LEFT_JOIN("LEFT JOIN {}  on {}"),
-	RIGHT_JOIN("RIGHT JIIN"),
+	RIGHT_JOIN("RIGHT JOIN {}  on {} "),
 	SELECT("SELECT "),
 	FROM(" FREOM "),
 	WHERE(" WHERE "),

@@ -20,4 +20,27 @@ public interface Query<Children, T, R> extends Serializable {
 	Children select(R... columns);
 
 
+	/**
+	 * 分页
+	 *
+	 * @param condition
+	 * @param offset
+	 * @param limit
+	 * @return Children
+	 * @since 2022/12/1
+	 */
+	Children limit(boolean condition, long offset, long limit);
+
+	/**
+	 * 分页
+	 *
+	 * @param condition
+	 * @param offset
+	 * @param limit
+	 * @return Children
+	 * @since 2022/12/1
+	 */
+	default Children limit(long offset, long limit) {
+		return limit(true, offset, limit);
+	}
 }

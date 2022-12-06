@@ -13,6 +13,7 @@
 	<artifactId>easy-code-common-core</artifactId>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.github.ben-manes.caffeine</groupId>
 			<artifactId>caffeine</artifactId>
